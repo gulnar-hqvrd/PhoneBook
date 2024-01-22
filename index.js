@@ -8,7 +8,7 @@ function showAlert(message, className) {
   const main = document.querySelector(".main");
   container.insertBefore(div, main);
 
-  setTimeout(() => document.querySelector(".alert").remove(), 3000);
+  setTimeout(() => document.querySelector(".alert").remove(), 2000);
 }
 
 //Clear
@@ -21,28 +21,31 @@ function clearFields() {
 }
 
 //Add data
-document
-  .querySelector("#submit")
-  .addEventListener("submit", (e) => e.preventDefault());
+document.querySelector("#phone-book").addEventListener("submit", (e) => {
+  e.preventDefault();
 
+  //Formdata
 
-//Formdata
+  const firstname = document.querySelector("#firstName").value;
+  const lastname = document.querySelector("#lastName").value;
+  const telefon = document.querySelector("#telefon").value;
+  const emailAddress = document.querySelector("#emailAddress").value;
+  console.log(firstname);
+  console.log(lastname);
 
-const firstname = document.querySelector("#firstName").value;
-const lastname = document.querySelector("#lastName").value;
-const telefon = document.querySelector("#telefon").value;
-const emailAddress = document.querySelector("#emailAddress").value;
-console.log(firstname);
-console.log(lastname);
+  if (
+    firstname == "" ||
+    lastname == "" ||
+    telefon == "" ||
+    emailAddress == ""
+  ) {
+    showAlert("Please fill in all fields", "danger");
+  } else {
+    if (selectedRow == null) {
+      const list = document.querySelector("#book-phone");
+      const row = document.createElement("tr");
 
-if (firstname == "" || lastname == "" || telefon == "" || emailAddress == "") {
-  showAlert("Please fill in all fields", "danger");
-} else {
-  if (selectedRow == null) {
-    const list = document.querySelector("#book-phone");
-    const row = document.createElement("tr");
-  
-    row.innerHTML = `
+      row.innerHTML = `
     <td>${firstname}</td>
     <td>${lastname}</td>
     <td>${telefon}</td>
@@ -50,14 +53,39 @@ if (firstname == "" || lastname == "" || telefon == "" || emailAddress == "") {
     <td>  
     <a href="#" class="btn btn-danger btn-sm delete">Remove</a>
     <a href="#" class="btn btn-warning btn-sm edit">Edit</a> 
-    </td>
+ 
     `;
-    list.appendChild(row);
-    selectedRow = null;
-    showAlert("Person Added", "success");
+      list.appendChild(row);
+      selectedRow = null;
+      showAlert("Person Added", "success");
+    }
 
+    else{
+      selectedRow.children[0].textContent = firstname;
+      selectedRow.children[1].textContent = lastname;
+      selectedRow.children[2].textContent = telefon;
+      selectedRow.children[3].textContent = emailAddress;
+      selectedRow = null;
+      showAlert ("Person information Edit" , "info") 
+    }
+
+    clearFields()
   }
-}
+});
+
+//Edit data
+document.querySelector("#book-phone").addEventListener("click", (e) => {
+  target = e.target;
+  if (target.classList.contains("edit")) {
+    selectedRow = target.parentElement.parentElement;
+    document.querySelector("#firstName").value = selectedRow.children[0].textContent;
+    document.querySelector("#lastName").value = selectedRow.children[1].textContent;
+    document.querySelector("#telefon").value = selectedRow.children[2].textContent;
+    document.querySelector("#emailAddress").value = selectedRow.children[3].textContent;
+  }
+});
+
+
 
 // Delete
 document.querySelector("#book-phone").addEventListener("click", (e) => {
