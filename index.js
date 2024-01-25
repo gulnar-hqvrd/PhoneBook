@@ -104,14 +104,14 @@ document.querySelector("#book-phone").addEventListener("click", (e) => {
   if (target.classList.contains("delete")) {
     const id = target.parentElement.parentElement.getAttribute("data-id")
     target.parentElement.parentElement.remove();
-    const users = JSON.parse(localStorage.getItem("users") ?? "[]")
+    const users = JSON.parse(localStorage.getItem("users") ?? "[] ")   //local storage
     users.splice(id, 1)
     localStorage.setItem("users", JSON.stringify(users))
     showAlert("Person Data Deleted", "danger");
   }
 });
 
-const users = JSON.parse(localStorage.getItem("users") ?? "[]");
+const users = JSON.parse(localStorage.getItem("users") ?? "[]"); //local storage
 
 for (let i = 0; i < users.length; i++) {
   const user = users[i];
